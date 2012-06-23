@@ -1,5 +1,7 @@
 <?php
 
+// ルーティング定義配列とPATH_INFOを受け取り、
+// ルーティングパラメータを特定する
 class Router {
 	protected $routes;
 
@@ -13,7 +15,7 @@ class Router {
 	public function compileRoutes($definitions) {
 		$routes = array();
 
-		foreach ($$definitions as $url => $params) {
+		foreach ($definitions as $url => $params) {
 			// スラッシュ(/)でURLを分割する
 			$tokens = explode('/', ltrim($url, '/'));
 			foreach ($tokens as $i => $token) {
@@ -40,8 +42,11 @@ class Router {
 			$path_info = '/' . $path_info;
 		}
 
+		// TODO #がわからないので調べる
 		foreach ($this->routes as $pattern => $params) {
+			// #はデリミタ。$patternにスラッシュが出現するため。
 			if(preg_match('#^' . $pattern . '$#', $path_info, $matches)){
+				// 連想配列をまとめる（$matchesのkeyは?P<>で指定したキー(id,nameとか)）
 				$params = array_merge($params, $matches);
 
 				return $params;
